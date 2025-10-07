@@ -34,3 +34,76 @@
     <p>Kelembapan = <span class="data" id="kelembapan">...</span> %</p>
 </div>
 
+<h2>Lokasi</h2>
+<div id="detailLokasi">
+    <p>Negara = <span class="data" id="negara">...</span></p>
+    <p>Provinsi = <span class="data" id="provinsi">...</span></p>
+    <p>Longitude = <span class="data" id="longitude">...</span></p>
+    <p>Latitut = <span class="data" id="latitude">...</span></p>
+</div>
+
+<script>
+   
+    function ambilDataCuaca(lokasi) {
+     
+        const urlapi = `http://api.weatherapi.com/v1/current.json?key=42261d3bc893472196a65635250710&q=${lokasi}&aqi=no`;
+
+        $.ajax({
+            url: urlapi,
+            method: "GET",
+            success: function(data){
+                console.log(data);
+                
+                // DATA CUACA
+                let lokasiNama = data.location.name;
+                let suhuC = data.current.temp_c;
+                let suhuF = data.current.temp_f; // TAMBAHAN
+                let kelembapan = data.current.humidity; // TAMBAHAN
+                let kondisi = data.current.condition.text;
+                let icon = data.current.condition.icon;
+                
+                // DATA LOKASI
+                let negara = data.location.country; // TAMBAHAN
+                let provinsi = data.location.region; // TAMBAHAN
+                let longitude = data.location.lon; // TAMBAHAN
+                let latitude = data.location.lat; // TAMBAHAN
+                
+                // OUTPUT UTAMA
+                document.getElementById("lokasi").innerHTML = lokasiNama;
+                document.getElementById("tampilan").innerHTML = `<h3>${suhuC} °C</h3> <p>${kondisi}</p> <img src="${icon}">`;
+
+                // OUTPUT DETAIL CUACA (TAMBAHAN)
+                document.getElementById("suhuC").innerHTML = suhuC;
+                document.getElementById("suhuF").innerHTML = suhuF;
+                document.getElementById("kelembapan").innerHTML = kelembapan;
+
+                // OUTPUT DETAIL LOKASI (TAMBAHAN)
+                document.getElementById("negara").innerHTML = negara;
+                document.getElementById("provinsi").innerHTML = provinsi;
+                document.getElementById("longitude").innerHTML = longitude;
+                document.getElementById("latitude").innerHTML = latitude;
+            },
+            error: function(xhr, status, error){ // Ganti 'fail' menjadi 'error' untuk jQuery AJAX
+                console.error("Gagal mengambil data cuaca:", status, error);
+                document.getElementById("lokasi").innerHTML = 'Lokasi tidak ditemukan atau gagal mengambil data.';
+                document.getElementById("tampilan").innerHTML = '';
+            }
+        });
+    }
+
+    // FUNGSI INI DIJALANKAN SAAT HALAMAN PERTAMA KALI DIMUAT
+    ambilDataCuaca(document.getElementById('lokasiInput').value);
+
+    // FUNGSI INI DIJALANKAN SAAT TOMBOL 'GET' DIKLIK
+    document.getElementById('getButton').addEventListener('click', function() {
+        const lokasiBaru = document.getElementById('lokasiInput').value;
+        if (lokasiBaru.trim() !== "") {
+            ambilDataCuaca(lokasiBaru);
+        } else {
+            alert("Mohon masukkan nama lokasi.");
+        }
+    });
+
+</script>
+</body>
+</html>
