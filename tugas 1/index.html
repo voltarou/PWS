@@ -3,34 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuaca</title>
+    <title>Aplikasi Cuaca Sederhana</title>
+    <style>
+        
+        body { font-family: sans-serif; padding: 20px; }
+        .input-group { margin-bottom: 20px; display: flex; gap: 10px; }
+        input[type="text"] { padding: 8px; flex-grow: 1; }
+        button { padding: 8px 15px; cursor: pointer; }
+        h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-top: 20px; }
+        p { margin: 5px 0; }
+        .data { font-weight: bold; }
+    </style>
 </head>
 <body>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-Cuaca : <p id="lokasi"></p>
-<br>
-<div id="tampilan"></div>
 
-<script>
-    const urlapi = "http://api.weatherapi.com/v1/current.json?key=42261d3bc893472196a65635250710&q=Yogyakarta&aqi=no"
 
-    $.ajax({
-        url: urlapi,
-        method: "GET",
-        success: function(data){
-            console.log(data);
-            let lokasi = data.location.name;
-            let suhu = data.current.temp_c;
-            let kondisi = data.current.condition.text;
-            let icon = data.current.condition.icon;
-
-            document.getElementById("lokasi").innerHTML = lokasi;
-            document.getElementById("tampilan").innerHTML = `<h3>${suhu} °C</h3> <p>${kondisi}</p> <img src="${icon}">`
-        },
-        fail: function(error){
-            console.log(error);
-        }
-    });
-</script>
-</body>
-</html>
